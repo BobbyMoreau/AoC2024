@@ -1,55 +1,87 @@
 ﻿using System;
+using System.Collections.Frozen;
 
 class Day01
 {
     static void Main(string[] args)
     {
-        var part = Environment.GetEnvironmentVariable("part") ?? "part1";
-        var path = "C:/Users/bobby.moreau-raquin/EDF/AoC/AoC2024/day01/input.txt";
+
+        var part = args.Length > 0 ? args[0].ToLower() : "part1";
+        var file = "input.txt";
         var solution = part switch
         {
-            "part1" => Part1(path),
-            "part2" => Part2(path),
+            "part1" => Part1(file),
+            "part2" => Part2(file),
             _ => throw new ArgumentOutOfRangeException(nameof(part), $"Unexpected {nameof(part)} value: '{part}'")
         };
 
-        Console.WriteLine("C#");
+        Console.WriteLine($"Solution for {part}:");
         Console.WriteLine(solution);
-
     }
 
-    static int Part1(string path)
+    static int Part1(string file)
     {
-        string[] lines = File.ReadAllLines(path);
-        int[] colOne = new int[lines.Length];
-        int[] colTwo = new int[lines.Length];
-        int n = 0;
-
-        foreach (string line in lines)
-        {        
-            string[] splitLine = line.Split(' ');
-            colOne[n] = int.Parse(splitLine[0].Trim());
-            string secondPiece = string.Join(" ", splitLine.Skip(1));
-            secondPiece = secondPiece.Trim();
-            colTwo[n] = int.Parse(secondPiece);
-            n++;
-        }
+        var (columnOne, columnTwo) = ReadSplitInput(file);
         
-        Array.Sort(colOne);
-        Array.Sort(colTwo);
+        Array.Sort(columnOne);
+        Array.Sort(columnTwo);
         int sum = 0;
 
-        for(int i = 0; i < n; i++)
+        for(int i = 0; i < columnOne.Length; i++)
         {          
-            sum += Math.Abs(colOne[i] - colTwo[i]);
+            sum += Math.Abs(columnOne[i] - columnTwo[i]);
         }
-
-        Console.WriteLine(sum);
         return sum;
     }
 
-    static int Part2(string path)
+    static int Part2(string file)
     {
-        return 0;
+        var (columnOne, columnTwo) = ReadSplitInput(file);
+
+        Array.Sort(columnOne);
+        Array.Sort(columnTwo);
+
+        int sum = 0;
+        for (int i = 0; i < columnOne.Length; i++)
+        {
+            int count = 0;
+            for (int j = 0; j < columnTwo.Length; j++)
+            {
+                if (columnOne[i] == columnTwo[j])
+                {
+                    count++;
+                }
+
+                if (columnOne[i] < columnTwo[j])
+                {
+                    break;
+                }
+            }
+
+            sum += (count * columnOne[i]);
+        }
+        return sum;
+    }
+
+
+    static (int[] columnOne, int[] columnTwo) ReadSplitInput(string file)
+    {
+        
+        string[] lines = File.ReadAllLines(file);
+        int[] columnOne = new int[lines.Length];
+        int[] columnTwo = new int[lines.Length];
+        int n = 0;
+
+        foreach (string line in lines)
+        {
+            string[] splitLine = line.Split(' ');
+            columnOne[n] = int.Parse(splitLine[0].Trim());
+            string secondPiece = string.Join(" ", splitLine.Skip(1));
+            secondPiece = secondPiece.Trim();
+            columnTwo[n] = int.Parse(secondPiece);
+            n++;
+        }
+
+        return (columnOne, columnTwo);
     }
 }
