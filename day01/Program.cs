@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Frozen;
 
 class Day01
 {
@@ -7,7 +6,9 @@ class Day01
     {
 
         var part = args.Length > 0 ? args[0].ToLower() : "part1";
-        var file = "input.txt";
+        var fileName =("input.txt");
+        string file = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+
         var solution = part switch
         {
             "part1" => Part1(file),
