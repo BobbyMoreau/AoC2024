@@ -6,7 +6,7 @@ public class Day03
     static void Main(string[] args)
     {
 
-        var part = args.Length > 0 ? args[0].ToLower() : "part1";
+        var part = args.Length > 0 ? args[0].ToLower() : "part2";
         var fileName = ("input.txt");
         string file = Path.Combine(Directory.GetCurrentDirectory(), fileName);
 
@@ -48,6 +48,28 @@ public class Day03
 
     static int Part2(string file)
     {
-        return 0;
+        string pattern = @"mul\((\d{1,3}),(\d{1,3})\)";
+        int sum = 0;
+
+        Regex regex = new Regex(pattern);
+        string content = File.ReadAllText(file);
+        Regex doNotPattern = new Regex(@"don't\(\).*?do\(\)");
+
+        MatchCollection matches = regex.Matches(content);
+
+        foreach (Match match in matches)
+        {
+
+            string numberOne = match.Groups[1].Value;
+            string numberTwo = match.Groups[2].Value;
+
+            int factorOne = int.Parse(numberOne);
+            int factorTwo = int.Parse(numberTwo);
+
+            sum += (factorOne * factorTwo);
+
+        }
+
+        return sum;
     }
 }
