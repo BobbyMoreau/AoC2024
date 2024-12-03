@@ -23,8 +23,9 @@ public class Day2
     {
         string[] lines = File.ReadAllLines(file);
         int n = 0;
-        int unsafeRules = 0;
-        bool unsafeRule = true;
+        int safeRules = 0;
+        bool safeRule = false;
+        bool fail = false;
 
         foreach (string line in lines)
         {
@@ -41,7 +42,11 @@ public class Day2
             bool isDescending = levels.SequenceEqual(levels.OrderByDescending(x => x));
             if (isAscending == true || isDescending == true) 
             {
-                unsafeRule = false;
+                //denna kan vara ok
+                //kolla om diffen är ok
+                //Är den ok flagga den som safe
+                //Är den inte ok testa att ta bort en efter en och se om den funkar då?
+
                 for (int i = 0; i < levels.Length-1; i++)
                 {
                     
@@ -57,6 +62,9 @@ public class Day2
                 }
 
             } 
+            //OM båda är false 
+            // skicka till check?
+
                 if (unsafeRule)
                 {
                     unsafeRules++;
