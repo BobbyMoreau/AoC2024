@@ -51,11 +51,18 @@ public class Day03
         string pattern = @"mul\((\d{1,3}),(\d{1,3})\)";
         int sum = 0;
 
-        Regex regex = new Regex(pattern);
+        
         string content = File.ReadAllText(file);
         Regex doNotPattern = new Regex(@"don't\(\).*?do\(\)");
+        Regex removeLastRegex = new Regex(@"don't\(\).*");
+        string cleanedContent = content.Replace("\r", "").Replace("\n", "");
+        string removeDoNot = doNotPattern.Replace(cleanedContent, "!!!!!");
+        string lastDoNot = removeLastRegex.Replace(removeDoNot, "!!!!!");
+        cleanedContent = lastDoNot;
 
-        MatchCollection matches = regex.Matches(content);
+        
+        Regex regex = new Regex(pattern);
+        MatchCollection matches = regex.Matches(cleanedContent);
 
         foreach (Match match in matches)
         {
